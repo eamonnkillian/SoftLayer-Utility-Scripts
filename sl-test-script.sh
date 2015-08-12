@@ -1,23 +1,25 @@
 #!/bin/bash
-useradd admin
-passwd admin <<EOF
-testadmin
-testadmin
+
+useradd sysadm
+passwd sysadm <<EOF
+sysadm
+sysadm
 EOF
 
-mkdir /home/admin/.ssh
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSiVAJyPr7uDIMLc8FeMdw7aFlShd+lYFLTngXeW5rtnRLLsX80IeeUftwmnf4sz9Yz19vUgCza53obCjIxAtwHM6CZvz3xkivF+lBg8yWto65Yoc+13JDn+ERqzAFx1fdXYtf2ARd8AEWSV2LI5iOFLPrHM6cnGAdk3nkkStlb0okyqBxavx3tzxgEyx9QKvEqB/+qMSj2BV/sRxPbzwCks8O9fjUlHrcEXnSsEb6S4+NP1fzMFR4tiy/wDIQTqCTwfcJ3Rb/3LsdlueIpo34XPjlSFVtQ2g2xe/HW93RcdKH3nX0pAM2O9OTXpmE89xxM/0drV8XgHn20pi6GctV saasify@Eamonns-iMac.local" > /home/admin/.ssh/authorized_keys
+mkdir /home/sysadm/.ssh
 
-chown admin /home/admin/.ssh
-chmod 700 /home/admin/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJApotnI8z+jw8qIlfmE6HdKrb1SjvXsenAlvhM73DtuQtXnM2Wc3nxi3pAmdWQPsXBmsWaohKu6rXqY8KMEH8eRxEjaVxyi8qOgWVwtXRHvo+l5BHrzETDQSjxAHi98DYAnOx4tx6qhpXNfACepbBh0vzTfhZ6UPff6hpNk9jnm9NS9EC7BRhxz7CJmCdPYfcq0xLV+mnLNemG9z2evEXQytXMvhGw1ekeUViCsgt6ceKbVkKSHRWcIL2De4EE8pCnZyK2Ac33nm4HCF65QJP0QUHrE+9Ga+KJrqfXqLylg17WS70Qk5u6d1jf23gsEltMmH5ckCjfPzsHzaC06SJ saasify@Eamonns-iMac.local" > /home/sysadm/.ssh/authorized_keys
 
-chown admin /home/admin/.ssh/authorized_keys
-chmod 600 /home/admin/.ssh/authorized_keys
+chown sysadm /home/sysadm/.ssh
+chown sysadm /home/sysadm/.ssh/authorized_keys
+chmod 700 /home/sysadm/.ssh
+chmod 400 /home/sysadm/.ssh/authorized_hosts
 
-echo "admin     ALL=(ALL)       NOPASSWD:ALL" >> /etc/sudoers
+echo "sysadm	ALL=(ALL)	NOPASSWD:ALL" >> /etc/sudoers
 
-sed '/PasswordAuthentication yes/d' sshd_config > /tmp/sshd_config
+sed '/PasswordAuthentication yes/d' /etc/ssh/sshd_config > /tmp/sshd_config
 echo "PasswordAuthentication no" >> /tmp/sshd_config
 mv /tmp/sshd_config /etc/ssh/sshd_config
-chmod 400 /etc/ssh/sshd_config
+chmod 400 /etc/ssh/sshd_config 
+
 service sshd restart
